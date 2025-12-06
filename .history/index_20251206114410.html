@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>दण्डक्रम</title>
+  <title>दण्डक्रम-नियमः</title>
   <style>
-    :root{--bg:#000000;--card:#fefefe;--accent:#857040;--muted:#9fb0c8}
+    :root{--bg:#19335f;--card:#f1f7ff;--accent:#857040;--muted:#9fb0c8}
     *{box-sizing:border-box}
     html,body{height:100vh;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans',Arial}
-    body{background-color:#110d02;color:#e6eef8;display:flex;align-items:center;justify-content:center;padding:18px}
+    body{background:linear-gradient(180deg,#110d02 0%, #071428 100%);color:#e6eef8;display:flex;align-items:center;justify-content:center;padding:18px}
     .app{height: 100vh;margin-top:100px;margin-bottom:100px;scrollbar-width:none;width:100%;max-width:920px;border-radius:14px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:0 10px 30px rgba(2,6,23,0.65)}
     .app::-webkit-scrollbar{display:none}
     header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
@@ -27,13 +27,8 @@
     footer{margin-top:12px;color:var(--muted);font-size:15px;text-align:left}
     @media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
     .hint{font-size:12px;color:var(--muted);margin-top:6px}
-    b{color:#ff9f1c;font-weight:600}
-    footer{
-      display: none;
-    }
-    footer b{
-      color: #ff9f1c;
-    }
+    b{color:var(--accent);font-weight:600}
+    footer
   </style>
 </head>
 <body>
@@ -41,7 +36,7 @@
     <header>
       <div class="logo">वेद</div>
       <div>
-        <h1>दण्डक्रम-उत्पादकम्</h1>
+        <h1>दण्ड-क्रम-नियमः</h1>
         <p class="lead">वैदिक पदपाठ के दण्ड-क्रम का स्वचालित निर्माण करें । यह केवल दण्ड-क्रम की विधि समझने के लिए है। </p>
       </div>
     </header>
@@ -81,11 +76,11 @@
 1 2 | 2 3 | 3 4 | 4 5 | 5 6 | 6 5 4 3 2 1
   </pre>
   </div>
-  <button onclick="ReadMore()" id="readmore">Read More</button>
   <footer>
-  <p><i>
+
+  <p><b>
 शुक्लयजुर्वेद माध्यन्दिन शाखा का प्रथम मन्त्र, उसका पदपाठ और दण्ड-क्रम-पाठ निम्नलिखित है । इसमें स्वर संधि और अवग्रह आदि नहीं दिखाए गए हैं । यह केवल दण्ड-क्रम की विधि समझने के लिए एक उदाहरणमात्र है । इसे वास्तविक पाठ के लिए नहीं लिया जाना चाहिए । वेद का पाठ गुरुचरण में बैठकर ही सीखा जाता है।
-  </i>
+  </b>
   <p>
     <b>मन्त्रः </b>
     इषे त्वोर्जे त्वा वायव स्थ देवो व: सविता प्रार्पयतु श्रेष्ठतमाय कर्मणऽआप्यायध्वमघ्न्याऽइन्द्राय भागं प्रजावती-रनमीवाऽअयक्ष्मा मा व स्तेनऽईशत माघशॅं सो ध्रुवाऽअस्मिन् गोपतौ स्यात बह्वीर्यजमानस्य पशून् पाहि॥
@@ -179,18 +174,6 @@
 
   // initial render
   (function(){ const out = generateAll(inputEl.value); outputEl.textContent = out || 'कोई आउटपुट नहीं'; })();
-
-  readmore = document.getElementById("readmore");;
-  readmore.onclick = function() {
-    var footer = document.querySelector("footer");
-    if (footer.style.display === "block") {
-      footer.style.display = "none";
-      readmore.textContent = "Read More";
-    } else {
-      footer.style.display = "block";
-      readmore.textContent = "Read Less";
-    }
-  };
 </script>
 </body>
 </html>
