@@ -107,6 +107,8 @@
 </div>
 
 <script>
+  
+  // number -> superscript string
   function toSuperscript(num) {
     const map = {
       '0': '⁰',
@@ -125,6 +127,8 @@
       .map(d => map[d] || d)
       .join('');
   }
+
+  // पैटर्न-जनरेटर
   function generateLinesForPads(pads) {
     pads = pads.filter(Boolean);
     const n = pads.length;

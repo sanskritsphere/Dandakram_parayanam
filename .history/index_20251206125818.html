@@ -107,40 +107,20 @@
 </div>
 
 <script>
-  function toSuperscript(num) {
-    const map = {
-      '0': '⁰',
-      '1': '¹',
-      '2': '²',
-      '3': '³',
-      '4': '⁴',
-      '5': '⁵',
-      '6': '⁶',
-      '7': '⁷',
-      '8': '⁸',
-      '9': '⁹'
-    };
-    return String(num)
-      .split('')
-      .map(d => map[d] || d)
-      .join('');
-  }
+  // पैटर्न-जनरेटर
   function generateLinesForPads(pads) {
     pads = pads.filter(Boolean);
     const n = pads.length;
     if (n === 0) return [];
-    if (n === 1) return [pads[0] + toSuperscript(1)];
-
-    // labeled pads: A -> A¹, B -> B², ...
-    const labeled = pads.map((p, i) => p + toSuperscript(i + 1));
+    if (n === 1) return [pads[0]];
 
     const all = [];
-    for (let p = 2; p <= labeled.length; p++) {
+    for (let p = 2; p <= n; p++) {
       const forwardPairs = [];
       for (let s = 1; s <= p - 1; s++) {
-        forwardPairs.push(labeled[s - 1] + ' ' + labeled[s]);
+        forwardPairs.push(pads[s - 1] + ' ' + pads[s]);
       }
-      const descending = labeled.slice(0, p).reverse().join(' ');
+      const descending = pads.slice(0, p).reverse().join(' ');
       const line = forwardPairs.join(' | ') + ' | ' + descending;
       all.push(line);
     }
@@ -150,24 +130,15 @@
   function generateAll(text) {
     const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return '';
-
     const blocks = [];
-    let lineIndex = 1; // global numbering: (1), (2), (3)...
-
     for (const line of lines) {
-      const pads = line.trim().split(/\s+/);
+      const pads =  line.trim().split(/\s+/);
       const outLines = generateLinesForPads(pads);
+      blocks.push(...outLines);
+    } 
 
-      for (const ln of outLines) {
-        blocks.push(`(${lineIndex}) ${ln}`);
-        lineIndex++;
-      }
-      // optional: alag input-lines ke बीच blank line
-      if (lines.length > 1 && outLines.length) {
-        blocks.push('');
-      }
-    }
-    return blocks.join('\n\n');
+    
+    return  blocks.join('\n');
   }
 
   const inputEl = document.getElementById('input');
@@ -186,11 +157,7 @@
   copyBtn.addEventListener('click', async ()=>{
     const text = outputEl.textContent;
     if (!text || text === 'कोई आउटपुट नहीं') return;
-    try {
-      await navigator.clipboard.writeText(text);
-      copyBtn.textContent='Copied';
-      setTimeout(()=>copyBtn.textContent='Copy Output',1100);
-    } catch(e){ /* fallback */ }
+    try { await navigator.clipboard.writeText(text); copyBtn.textContent='Copied'; setTimeout(()=>copyBtn.textContent='Copy Output',1100);} catch(e){ /* fallback */ }
   });
 
   downloadBtn.addEventListener('click', ()=>{
@@ -198,45 +165,24 @@
     if (!text || text === 'कोई आउटपुट नहीं') return;
     const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'ved_pada_pattern.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
+    const a = document.createElement('a'); a.href = url; a.download = 'ved_pada_pattern.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   });
 
-  clearBtn.addEventListener('click', ()=>{
-    inputEl.value='';
-    outputEl.textContent='कोई आउटपुट नहीं';
-    try{ localStorage.removeItem('ved_pada_input'); }catch(e){}
-  });
+  clearBtn.addEventListener('click', ()=>{ inputEl.value=''; outputEl.textContent='कोई आउटपुट नहीं'; try{ localStorage.removeItem('ved_pada_input'); }catch(e){} });
 
   // restore last input
-  try {
-    const v = localStorage.getItem('ved_pada_input');
-    if (v) inputEl.value = v;
-  } catch(e){}
+  try { const v = localStorage.getItem('ved_pada_input'); if (v) inputEl.value = v; } catch(e){}
 
   // auto-generate on input with debounce
   let t;
   inputEl.addEventListener('input', ()=>{
-    clearTimeout(t);
-    t = setTimeout(()=>{
-      const out = generateAll(inputEl.value);
-      outputEl.textContent = out || 'कोई आउटपुट नहीं';
-      try{ localStorage.setItem('ved_pada_input', inputEl.value);}catch(e){}
-    }, 250);
+    clearTimeout(t); t = setTimeout(()=>{ const out = generateAll(inputEl.value); outputEl.textContent = out || 'कोई आउटपुट नहीं'; try{ localStorage.setItem('ved_pada_input', inputEl.value);}catch(e){} }, 250);
   });
 
   // initial render
-  (function(){
-    const out = generateAll(inputEl.value);
-    outputEl.textContent = out || 'कोई आउटपुट नहीं';
-  })();
+  (function(){ const out = generateAll(inputEl.value); outputEl.textContent = out || 'कोई आउटपुट नहीं'; })();
 
-  readmore = document.getElementById("readmore");
+  readmore = document.getElementById("readmore");;
   readmore.onclick = function() {
     var footer = document.querySelector("footer");
     if (footer.style.display === "block") {
